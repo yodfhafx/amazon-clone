@@ -7,7 +7,11 @@ const cors = require('cors');
 const config = require('./config');
 const app = express();
 
-mongoose.connect(config.database, {useMongoClient: true}, err => {
+// Map global promises
+mongoose.Promise = global.Promise;
+
+// Mongoose Connect
+mongoose.connect(config.database, {useNewUrlParser: true}, err => {
   if (err) {
     console.log(err);
   } else {
@@ -15,6 +19,7 @@ mongoose.connect(config.database, {useMongoClient: true}, err => {
   }
 });
 
+// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
