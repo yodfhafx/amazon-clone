@@ -7,9 +7,6 @@ const cors = require('cors');
 const config = require('./config');
 const app = express();
 
-// Map global promises
-mongoose.Promise = global.Promise;
-
 // Mongoose Connect
 mongoose.connect(config.database, {useNewUrlParser: true}, err => {
   if (err) {
@@ -18,6 +15,7 @@ mongoose.connect(config.database, {useNewUrlParser: true}, err => {
     console.log('Connected to the database');
   }
 });
+mongoose.set('useCreateIndex', true)
 
 // Middleware
 app.use(bodyParser.json());
@@ -25,11 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cors());
 
-app.get('/', (req, res, next) => {
-  res.json({
-    user: "manee siriwan"
-  });
-});
+const userRoutes = require('./routes/account');
+app.use('/api/accounts', userRoutes);
+
 
 app.listen(config.port, err => {
   console.log('server run at port: ' + config.port);

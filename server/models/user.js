@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const bcrypt = require('bcryptjs');
-const crypto = require('cryto');
+const bcrypt = require('bcrypt-nodejs');
+const crypto = require('crypto');
 
 
 const UserSchema = new Schema({
@@ -44,7 +44,7 @@ UserSchema.methods.gravatar = function(size) {
     if(!this.email) {
         return 'https://gravatar.com/avatar/?s' + size + '&d=retro';
     } else {
-        var md5 = crypto.createHash('md5').update(this.email).digit('hex'); 
+        var md5 = crypto.createHash('md5').update(this.email).digest('hex'); 
         return 'https://gravatar.com/avatar/' + md5 + '?s' + size + '&d=retro';
     }
     
